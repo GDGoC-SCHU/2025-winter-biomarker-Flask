@@ -56,6 +56,10 @@ def get_recommended_food(user_info):
     return food_data.sample(n=min(3, len(food_data))).to_dict(orient="records")
 
 def generate_diet_plan_from_data(user_info):
+    # "bmr"을 "basal metabolic rate"로 변경
+    user_info["basal metabolic rate"] = user_info.pop("bmr")
+    print(user_info)
+    
     recommended_foods = get_recommended_food(user_info)
     if recommended_foods:
         foods_text = f"추천 음식 리스트:\n{recommended_foods}"
