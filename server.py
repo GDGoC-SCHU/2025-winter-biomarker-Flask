@@ -81,7 +81,11 @@ def recommend_meal(userId):
     # 스프링 서버로 반환할 JSON 데이터 생성
     response_data = {"answer": diet_plan}
     
-    return jsonify(response_data)
+    return app.response_class(
+        response=json.dumps(response_data, ensure_ascii=False),  # UTF-8 유지
+        status=200,
+        mimetype='application/json'
+    )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
