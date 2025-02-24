@@ -71,11 +71,28 @@ def generate_diet_plan_from_data(user_info):
     {foods_text}
     이 정보를 바탕으로 목표에 따른 하루에 먹어야할 영양소 정보와 비율을 알려주고,
     하루 식단을 아침, 점심, 저녁으로 나눠서 적어주고 추천 운동 방법을 알려줘.
+
+    아래 형식(JSON)으로 응답을 작성해줘:
+
+    {{
+        "result": "목표: (목표 입력) 에너지: (kcal 값) 단백질: (g 값) 지방: (g 값) 탄수화물: (g 값)",
+        "recommend-meal": {{
+            "breakfast": "(아침 식단 및 kcal 값)",
+            "lunch": "(점심 식단 및 kcal 값)",
+            "dinner": "(저녁 식단 및 kcal 값)"
+        }},
+        "recommend-exercise": "(추천 운동 방법 상세 설명)"
+    }}
+
+    위 JSON 형식에 맞춰 정확하게 응답해줘.
     """
     
     model = genai.GenerativeModel('gemini-pro')
     response = model.generate_content(prompt)
-    return response.text
+
+    structured_response = json.loads(response.text)  # Gemini 응답을 JSON으로 변환
+
+    return structured_response
 
 @app.route('/<int:userId>/recommend_meal', methods=['POST'])
 def recommend_meal(userId):
